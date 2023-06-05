@@ -1,9 +1,12 @@
 ---
-- name : DHCP server setup^
+- name : DHCP server setup
   hosts : dhcp-dns
   remote_user: guillaume
+  become: yes
+  become_method: sudo
+  
+  tasks:
 
- tasks:
   - name: Install dhcp server package
     apt: 
       name: isc-dhcp-server

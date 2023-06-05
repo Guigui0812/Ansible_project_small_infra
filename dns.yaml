@@ -1,35 +1,9 @@
 ---
-- name: Configure DNS and DHCP server
+- name: DNS server setup
   hosts: dhcp-dns
   remote_user: guillaume
 
   tasks:
-  - name: Install dhcp server package
-    apt: 
-      name: isc-dhcp-server
-      state: latest
-      update_cache: yes
-
-  - name: Configure dhcp server
-    blockinfile:
-      path: /etc/dhcp/dhcpd.conf
-      block: |
-        subnet 192.168.12.0 netmask 255.255.255.0 {
-          range 192.168.12.10 192.168.12.20;
-          option domain-name-servers 1.1.1.1, 8.8.8.8;
-          option routers 192.168.12.1;
-          default-lease-time 600;
-          max-lease-time 7200;
-        }
-      backup: yes
-           
-  - name: Configure dhcp server interface
-    replace:
-      path: /etc/default/isc-dhcp-server
-      regexp: 'INTERFACESv4=".*"'
-      replace: 'INTERFACESv4="enps03"'
-      backup: yes
-
   - name : Install bind9 package
     apt: 
       name: 
@@ -56,6 +30,3 @@
       group: root
       mode: 0644
       backup: yes
-
-
-
